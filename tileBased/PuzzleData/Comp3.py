@@ -1,0 +1,1 @@
+CompName = 'Comp3'

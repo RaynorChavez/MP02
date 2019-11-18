@@ -73,7 +73,8 @@ class Game():
 				self.quit()
 			if event.type == pg.KEYDOWN:
 				if event.key == pg.K_ESCAPE:
-					self.CompUI.kill()
+					for sprites in self.puzzlesprites:
+						sprites.kill()
 					self.CompON = False
 				if event.key == pg.K_SPACE:
 					self.space = True
@@ -90,8 +91,7 @@ class Game():
 			Clickme(self, hit.x, hit.y) #Calls a Clickme Popup
 			if (self.computers in hit.groups) and self.space and not self.CompON: #Checks if a computer was hit and if spacebar is pressed
 				self.CompON = True
-				Text_inSprite(hit.image, 'Spaced', 20, black)
-				self.CompUI = ComputerUI(self)
+				self.CompUI = ComputerUI(self, hit)
 
 
 		#Checks if player is hitting something, if not, delete all objects in clickme group
@@ -110,7 +110,7 @@ class Game():
 
 		for sprite in self.puzzlesprites:
 			self.screen.blit(sprite.image, sprite.rect)
-			
+
 		pg.display.flip() # ALWAYS DO THIS LAST *After you draw everything*
 
 	def drawGrid(self):

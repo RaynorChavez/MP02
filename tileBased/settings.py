@@ -18,14 +18,16 @@ pastelBlue = (119, 158, 203)
 pastelPurple = (177, 156, 217)
 
 # initialize the dimension of your screen
-width = 1024
-height = 768
+width = int(1024)
+height = int(768)
 FPS = 60
 title = "Tile Based Game"
 backgroundColor = pastelPink
+dynamic_width = int(width/1024)		#Fix this (for the Computer UI)
+dynamic_height = int(height/768)	#Fix this (for the Computer UI)
 
 # Map Grid Settings
-tileSize = 34
+tileSize = int(34)
 gridWidth = width / tileSize
 gridHeight = height / tileSize
 
