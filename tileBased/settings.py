@@ -25,12 +25,12 @@ title = "Tile Based Game"
 backgroundColor = pastelPink
 
 # Map Grid Settings
-tileSize = 48
+tileSize = 34
 gridWidth = width / tileSize
 gridHeight = height / tileSize
 
 #Player settings
-playerSpeed = 250
+playerSpeed = 350
 playerRotSpeed = 300
 playerImg = "tile005.png"
 
