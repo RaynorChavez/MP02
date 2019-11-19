@@ -36,3 +36,43 @@ playerSpeed = 350
 playerRotSpeed = 300
 playerImg = "tile005.png"
 
+
+#Constants for ComputerGUI
+
+#Rightpane
+right_pane_width = width*2/3
+right_pane_height = height
+right_pane_topleft = (0,0)
+
+#Leftpane
+left_pane_width = width/3
+left_pane_height = height
+left_pane_topright = (width, 0)
+
+#Instruction Box
+instruction_width = left_pane_width - 2*tileSize
+instruction_height = left_pane_width - 2*tileSize
+
+#Hard Disk Bay
+hdd_width = right_pane_width
+hdd_height = right_pane_height*1/5
+
+#Monitor
+monitor_width = right_pane_width
+monitor_height = right_pane_height*4/5
+
+#CodeButtons
+codebutton_width = left_pane_width*2/3
+codebutton_height = tileSize/2
+
+#CompScreen
+screen_width = right_pane_width - 4*tileSize
+screen_height = monitor_height - 4*tileSize
+
+#ScreenText
+stext_width = screen_width
+stext_height = tileSize/1.5
+
+
+#mouse
+mousepos = (0,0)

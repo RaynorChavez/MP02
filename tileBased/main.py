@@ -6,11 +6,12 @@ from os import path
 from settings import *
 from sprites import *
 from tileMap import *
-from ComputerUI import *
+from ComputerUI1 import *
 
 class Game():
 
 	def __init__(self):
+		self.mouseclick = (0,0)
 		# summary: Initialize game and create the window
 		pg.init() # initializes pygame and gets it ready to go
 		pg.mixer.init() # if you wish to add sound
@@ -36,7 +37,12 @@ class Game():
 		self.clickme = pg.sprite.Group()
 		self.interactable = pg.sprite.Group()
 		self.puzzlesprites = pg.sprite.Group()
+		self.codebuttons = pg.sprite.Group()
+		self.controlbutton = pg.sprite.Group()
 		self.buttons = pg.sprite.Group()
+		self.screentext = pg.sprite.Group()
+		self.delbuttons = pg.sprite.Group()
+
 
 		for row, tiles in enumerate(self.map.data):
 			for column, tile in enumerate(tiles):
@@ -81,8 +87,9 @@ class Game():
 				if event.key == pg.K_SPACE:
 					self.space = True
 			if event.type == pg.MOUSEBUTTONUP:
-      				self.mouse = pg.mouse.get_pos()
-      				print(self.mouse)
+      				self.mouseclick = pg.mouse.get_pos()
+      				#mousepos = pg.mouse.get_pos()
+      				#print(mousepos)
 
 
 	def update(self):
@@ -90,13 +97,20 @@ class Game():
 		if not self.CompON: #Freezes all sprites within the game except puzzlesprites
 			self.allSprites.update()
 		self.puzzlesprites.update()
-		#check if player clicks a button in Computer GUI
-		#clicked_sprites = [button for button in self.Buttons if button.rect.collidepoint(self.game.mouse)]
-		#self.clicked = pg.sprite.
 
-		'''for button in self.buttons:
-    		if button.rect.collidepoint(self.mouse): 
-    			self.CompUI.RightBox.CompScreen.print_codeline()'''
+
+		#check if player clicks a codebutton in Computer GUI
+		self.clickedbutton = [button for button in self.codebuttons if button.rect.collidepoint(self.mouseclick)]
+		for button in self.clickedbutton:
+			self.CompUI.add_Scr_line(button)
+			self.mouseclick = (0,0)
+
+		#check if player clicks a delbutton in Computer GUI
+		self.clickedbutton = [button for button in self.delbuttons if button.rect.collidepoint(self.mouseclick)]
+		for button in self.clickedbutton:
+			self.CompUI.delete_Scr_line()
+			self.mouseclick = (0,0)
+
 		#check if player hits an interactable and Spawns a Clickme Popup
 		self.hits = pg.sprite.spritecollide(self.player,self.interactable, False, pg.sprite.collide_circle)
 		for hit in self.hits:
