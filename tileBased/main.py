@@ -36,6 +36,8 @@ class Game():
 		self.clickme = pg.sprite.Group()
 		self.interactable = pg.sprite.Group()
 		self.puzzlesprites = pg.sprite.Group()
+		self.buttons = pg.sprite.Group()
+
 		for row, tiles in enumerate(self.map.data):
 			for column, tile in enumerate(tiles):
 				if tile == "W":
@@ -78,6 +80,9 @@ class Game():
 					self.CompON = False
 				if event.key == pg.K_SPACE:
 					self.space = True
+			if event.type == pg.MOUSEBUTTONUP:
+      				self.mouse = pg.mouse.get_pos()
+      				print(self.mouse)
 
 
 	def update(self):
@@ -85,6 +90,13 @@ class Game():
 		if not self.CompON: #Freezes all sprites within the game except puzzlesprites
 			self.allSprites.update()
 		self.puzzlesprites.update()
+		#check if player clicks a button in Computer GUI
+		#clicked_sprites = [button for button in self.Buttons if button.rect.collidepoint(self.game.mouse)]
+		#self.clicked = pg.sprite.
+
+		'''for button in self.buttons:
+    		if button.rect.collidepoint(self.mouse): 
+    			self.CompUI.RightBox.CompScreen.print_codeline()'''
 		#check if player hits an interactable and Spawns a Clickme Popup
 		self.hits = pg.sprite.spritecollide(self.player,self.interactable, False, pg.sprite.collide_circle)
 		for hit in self.hits:
