@@ -18,24 +18,22 @@ pastelBlue = (119, 158, 203)
 pastelPurple = (177, 156, 217)
 
 # initialize the dimension of your screen
-width = int(1024)
-height = int(768)
+width = 1024
+height = 768
 FPS = 60
-title = "Tile Based Game"
+title = "Nightmare in DCS"
 backgroundColor = pastelPink
-dynamic_width = int(width/1024)		#Fix this (for the Computer UI)
-dynamic_height = int(height/768)	#Fix this (for the Computer UI)
 
 # Map Grid Settings
-tileSize = int(34)
+tileSize = 64
+tileSize_puzzle = 34
 gridWidth = width / tileSize
 gridHeight = height / tileSize
 
 #Player settings
-playerSpeed = 350
-playerRotSpeed = 300
-playerImg = "tile005.png"
-
+playerSpeed = 250
+playerRotSpeed = 500
+playerImg = "Down001.png"
 
 #Constants for ComputerGUI
 
@@ -50,8 +48,8 @@ left_pane_height = height
 left_pane_topright = (width, 0)
 
 #Instruction Box
-instruction_width = left_pane_width - 2*tileSize
-instruction_height = left_pane_width - 2*tileSize
+instruction_width = left_pane_width - 2*tileSize_puzzle
+instruction_height = left_pane_width - 2*tileSize_puzzle
 
 #Hard Disk Bay
 hdd_width = right_pane_width
@@ -63,16 +61,15 @@ monitor_height = right_pane_height*4/5
 
 #CodeButtons
 codebutton_width = left_pane_width*2/3
-codebutton_height = tileSize/2
+codebutton_height = tileSize_puzzle/2
 
 #CompScreen
-screen_width = right_pane_width - 4*tileSize
-screen_height = monitor_height - 4*tileSize
+screen_width = right_pane_width - 4*tileSize_puzzle
+screen_height = monitor_height - 4*tileSize_puzzle
 
 #ScreenText
 stext_width = screen_width
-stext_height = tileSize/1.5
+stext_height = tileSize_puzzle/2
 
-
-#mouse
-mousepos = (0,0)
+#Computer States
+Computer_States = [0,0,0,0,0,0]

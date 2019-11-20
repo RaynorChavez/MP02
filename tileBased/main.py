@@ -2,15 +2,17 @@
 
 import pygame as pg
 import sys
+import os
 from os import path
 from settings import *
 from sprites import *
 from tileMap import *
 from ComputerUI1 import *
 
-class Game():
 
+class Game():
 	def __init__(self):
+		#print('here1')
 		self.mouseclick = (0,0)
 		# summary: Initialize game and create the window
 		pg.init() # initializes pygame and gets it ready to go
@@ -24,13 +26,19 @@ class Game():
 	def loadData(self):
 		gameFolder = path.dirname(__file__)
 		imageFolder = path.join(gameFolder, "images")
-		self.map = Map(path.join(gameFolder, "map.txt"))
-		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert_alpha()
+		mapFolder = path.join(gameFolder, "maps")
 
+		self.map = TiledMap(path.join(mapFolder, "map.tmx"))
+		self.mapImg = self.map.makeMap()
+		self.mapRect = self.mapImg.get_rect()
+		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert()
+		self.playerImage.set_colorkey(white)
+	
 	def new(self):
+		#print('here2')
 		# Game restart
-		compnum = 0
 		self.comps = []
+		self.doors = []
 		self.allSprites = pg.sprite.Group()
 		self.walls = pg.sprite.Group()
 		self.computers = pg.sprite.Group()
@@ -42,20 +50,37 @@ class Game():
 		self.buttons = pg.sprite.Group()
 		self.screentext = pg.sprite.Group()
 		self.delbuttons = pg.sprite.Group()
+		self.savebuttons = pg.sprite.Group()
 
-
-		for row, tiles in enumerate(self.map.data):
-			for column, tile in enumerate(tiles):
-				if tile == "W":
-					Wall(self, column, row)
-				if tile == "P":
-					self.player = Player(self, column, row)
-				if tile == 'C':
-					self.comps.append(Computer(self, column, row, compnum))
-					print(compnum, self.comps[compnum])
-					compnum += 1
-				if tile == 'I':
-					Wall1(self, column, row)
+		for tileObject in self.map.tmxdata.objects:
+			if tileObject.name == "player":
+				self.player = Player(self, tileObject.x, tileObject.y)
+			if tileObject.name == "wall":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 0":
+				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "computer 1":
+				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "computer 2":
+				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "computer 3":
+				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "computer 4":
+				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "computer 5":
+				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "door 0":
+				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "door 1":
+				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "door 2":
+				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "door 3":
+				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "door 4":
+				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
+			if tileObject.name == "door 5":
+				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
 		
 		self.camera = Camera(self.map.width, self.map.height)
 
@@ -74,10 +99,14 @@ class Game():
 
 	def events(self):
 		# Game loop - events
+		#print('here3')
 		self.space = False
 		for event in pg.event.get(): #for all events that occur
 		# Checks for closing the window
-			if event.type == pg.QUIT: # pygame.QUIT is just a pygame thing for closing window
+			if event.type == pg.QUIT: 
+				for i in range(6):
+					if os.path.exists("Comp{}.pickle".format(i)):
+						os.remove("Comp{}.pickle".format(i))
 				self.quit()
 			if event.type == pg.KEYDOWN:
 				if event.key == pg.K_ESCAPE:
@@ -88,9 +117,7 @@ class Game():
 					self.space = True
 			if event.type == pg.MOUSEBUTTONUP:
       				self.mouseclick = pg.mouse.get_pos()
-      				#mousepos = pg.mouse.get_pos()
-      				#print(mousepos)
-
+      				
 
 	def update(self):
 		# Game loop - update
@@ -98,11 +125,17 @@ class Game():
 			self.allSprites.update()
 		self.puzzlesprites.update()
 
+		print(Computer_States)
+
+		#I Puzzle is solved on COmputer x, corresponding door is killed
+		for i in range(6):
+			if Computer_States[i] == 1:
+				self.doors[i].kill()
 
 		#check if player clicks a codebutton in Computer GUI
 		self.clickedbutton = [button for button in self.codebuttons if button.rect.collidepoint(self.mouseclick)]
 		for button in self.clickedbutton:
-			self.CompUI.add_Scr_line(button)
+			self.CompUI.add_Scr_line(button, True)
 			self.mouseclick = (0,0)
 
 		#check if player clicks a delbutton in Computer GUI
@@ -119,7 +152,6 @@ class Game():
 				self.CompON = True
 				self.CompUI = ComputerUI(self, hit)
 
-
 		#Checks if player is hitting something, if not, delete all objects in clickme group
 		if len(self.hits) == 0:
 			for sprite in self.clickme:
@@ -129,14 +161,14 @@ class Game():
 
 	def draw(self):
 		# Game loop - draw
-		self.screen.fill(backgroundColor)
+		#self.screen.fill(backgroundColor)
 		self.drawGrid()
+		self.screen.blit(self.mapImg, self.camera.applyRect(self.mapRect))
 		for sprite in self.allSprites:
 			self.screen.blit(sprite.image, self.camera.apply(sprite))
 
 		for sprite in self.puzzlesprites:
 			self.screen.blit(sprite.image, sprite.rect)
-
 		pg.display.flip() # ALWAYS DO THIS LAST *After you draw everything*
 
 	def drawGrid(self):
@@ -154,7 +186,9 @@ class Game():
 		pass
 
 g = Game()
+
 g.showStartScreen()
+
 while True:
 	g.new()
 	g.run()
