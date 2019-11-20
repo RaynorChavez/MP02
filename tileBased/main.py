@@ -7,6 +7,7 @@ from settings import *
 from sprites import *
 from tileMap import *
 
+
 class Game():
 	def __init__(self):
 		# summary: Initialize game and create the window
@@ -20,19 +21,54 @@ class Game():
 	def loadData(self):
 		gameFolder = path.dirname(__file__)
 		imageFolder = path.join(gameFolder, "images")
-		self.map = Map(path.join(gameFolder, "map.txt"))
-		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert_alpha()
+		mapFolder = path.join(gameFolder, "maps")
+
+		self.map = TiledMap(path.join(mapFolder, "map.tmx"))
+		self.mapImg = self.map.makeMap()
+		self.mapRect = self.mapImg.get_rect()
+		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert()
+		self.playerImage.set_colorkey(white)
+	
 	def new(self):
 		# Game restart
 		self.allSprites = pg.sprite.Group()
 		self.walls = pg.sprite.Group()
-		for row, tiles in enumerate(self.map.data):
-			for column, tile in enumerate(tiles):
-				if tile == "W":
-					Wall(self, column, row)
-				if tile == "P":
-					self.player = Player(self, column, row)
+		#for row, tiles in enumerate(self.map.data):
+		#	for column, tile in enumerate(tiles):
+		#		if tile == "W":
+		#			Wall(self, column, row)
+		#		if tile == "P":
+		#			self.player = Player(self, column, row)
 
+		for tileObject in self.map.tmxdata.objects:
+			if tileObject.name == "player":
+				self.player = Player(self, tileObject.x, tileObject.y)
+			if tileObject.name == "wall":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 0":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 1":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 2":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 3":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 4":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			if tileObject.name == "computer 5":
+				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			#if tileObject.name == "door 0":
+				#Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			#if tileObject.name == "door 1":
+				#Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			#if tileObject.name == "door 2":
+				#Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			#if tileObject.name == "door 3":
+				#Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			#if tileObject.name == "door 4":
+				#Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+			#if tileObject.name == "door 5":
+				#Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
 		self.camera = Camera(self.map.width, self.map.height)
 
 	def run(self):
@@ -65,8 +101,9 @@ class Game():
 
 	def draw(self):
 		# Game loop - draw
-		self.screen.fill(backgroundColor)
+		#self.screen.fill(backgroundColor)
 		self.drawGrid()
+		self.screen.blit(self.mapImg, self.camera.applyRect(self.mapRect))
 		for sprite in self.allSprites:
 			self.screen.blit(sprite.image, self.camera.apply(sprite))
 		pg.display.flip() # ALWAYS DO THIS LAST *After you draw everything*

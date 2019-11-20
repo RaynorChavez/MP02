@@ -21,16 +21,16 @@ pastelPurple = (177, 156, 217)
 width = 1024
 height = 768
 FPS = 60
-title = "Tile Based Game"
+title = "Nightmare in DCS"
 backgroundColor = pastelPink
 
 # Map Grid Settings
-tileSize = 48
+tileSize = 64
 gridWidth = width / tileSize
 gridHeight = height / tileSize
 
 #Player settings
 playerSpeed = 250
-playerRotSpeed = 300
-playerImg = "tile005.png"
+playerRotSpeed = 500
+playerImg = "Down001.png"
 
