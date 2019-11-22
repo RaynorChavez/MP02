@@ -8,7 +8,7 @@ from settings import *
 from sprites import *
 from tileMap import *
 from ComputerUI1 import *
-
+from DoorUI import *
 
 class Game():
 	def __init__(self):
@@ -51,6 +51,8 @@ class Game():
 		self.screentext = pg.sprite.Group()
 		self.delbuttons = pg.sprite.Group()
 		self.savebuttons = pg.sprite.Group()
+		self.doorgroup = pg.sprite.Group()
+		self.textbox = pg.sprite.Group()
 
 		for tileObject in self.map.tmxdata.objects:
 			if tileObject.name == "player":
@@ -117,6 +119,8 @@ class Game():
 					self.space = True
 			if event.type == pg.MOUSEBUTTONUP:
       				self.mouseclick = pg.mouse.get_pos()
+			for textbox in self.textbox:
+				textbox.handle_event(event)
       				
 
 	def update(self):
@@ -125,11 +129,11 @@ class Game():
 			self.allSprites.update()
 		self.puzzlesprites.update()
 
-		print(Computer_States)
+		#print(Door_States)
 
 		#I Puzzle is solved on COmputer x, corresponding door is killed
 		for i in range(6):
-			if Computer_States[i] == 1:
+			if Door_States[i] == 1:
 				self.doors[i].kill()
 
 		#check if player clicks a codebutton in Computer GUI
@@ -141,7 +145,7 @@ class Game():
 		#check if player clicks a delbutton in Computer GUI
 		self.clickedbutton = [button for button in self.delbuttons if button.rect.collidepoint(self.mouseclick)]
 		for button in self.clickedbutton:
-			self.CompUI.delete_Scr_line()
+			self.CompUI.delete_Scr_line(button)
 			self.mouseclick = (0,0)
 
 		#check if player hits an interactable and Spawns a Clickme Popup
@@ -151,6 +155,9 @@ class Game():
 			if (self.computers in hit.groups) and self.space and not self.CompON: #Checks if a computer was hit and if spacebar is pressed
 				self.CompON = True
 				self.CompUI = ComputerUI(self, hit)
+			if (self.doorgroup in hit.groups) and self.space:
+				self.DoorUI = DoorUI(self, hit)
+				self.CompON = True
 
 		#Checks if player is hitting something, if not, delete all objects in clickme group
 		if len(self.hits) == 0:
@@ -169,6 +176,8 @@ class Game():
 
 		for sprite in self.puzzlesprites:
 			self.screen.blit(sprite.image, sprite.rect)
+		for textbox in self.textbox:
+			textbox.draw(self.screen)
 		pg.display.flip() # ALWAYS DO THIS LAST *After you draw everything*
 
 	def drawGrid(self):

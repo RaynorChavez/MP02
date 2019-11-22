@@ -5,12 +5,16 @@ from os import path
 vec = pg.math.Vector2
 
 font_name = pg.font.match_font('arial')
+
 class Text_inSprite(pg.sprite.Sprite):
-	def __init__(self, surf, text, size, color):
+	def __init__(self, surf, text, size, color, center = False):
 		pg.sprite.Sprite.__init__(self)
 		self.font = pg.font.SysFont(font_name, size)
 		self.text_surface = self.font.render(text, True, color)
-		self.text_rect = self.text_surface.get_rect(center=surf.get_rect().center)
+		if center == True:
+			self.text_rect = self.text_surface.get_rect(center=surf.get_rect().center)
+		else:
+			self.text_rect = self.text_surface.get_rect().move(20,surf.get_rect().height/2 - self.text_surface.get_rect().height/2)
 		surf.blit(self.text_surface, self.text_rect)
 
 class Player(pg.sprite.Sprite):
@@ -171,7 +175,7 @@ class Computer(pg.sprite.Sprite):
 
 class Door(pg.sprite.Sprite):
 	def __init__(self, game, x, y, w, h):
-		self.groups = game.computers, game.walls # initializes what group you'll be part of
+		self.groups = game.walls, game.interactable, game.doorgroup # initializes what group you'll be part of
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.rect = pg.Rect(x, y, w, h)
@@ -179,10 +183,6 @@ class Door(pg.sprite.Sprite):
 		self.y = y
 		self.rect.x = x
 		self.rect.y = y
-
-	def dissolve(self):
-		self.image = pg.image.load(path.join(path.dirname(__file__), 'white.png')).convert()
-
 
 class Clickme(pg.sprite.Sprite):
 	def __init__(self, game, x, y):
@@ -203,22 +203,6 @@ class Clickme(pg.sprite.Sprite):
 		if pg.time.get_ticks() - self.spawn_time > 100:
 			self.kill()
 
-
-'''
-class Clickme(pg.sprite.Sprite):
-	def __init__(self, game, x, y):
-		self.groups = game.allSprites, game.clickme
-		pg.sprite.Sprite.__init__(self, self.groups)
-		self.game = game
-		self.image = pg.Surface((tileSize*2, tileSize*2/3))
-		self.image.fill(red)
-		self.rect = self.image.get_rect()
-		self.x = x
-		self.y = y - 1
-		self.rect.centerx = self.x * tileSize + tileSize/2
-		self.rect.y = self.y * tileSize
-		Text_inSprite(self.image, 'Press Space', 20, black)
-'''
 
 class Movable(pg.sprite.Sprite):
 	def __init__(self, game, x, y):

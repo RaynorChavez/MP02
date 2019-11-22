@@ -7,6 +7,7 @@ red = (255, 0, 0)
 blue = (0, 0, 255)
 green = (0, 255, 0)
 black = (0, 0, 0)
+black1 = (1, 0, 0)
 white = (255, 255, 255)
 pastelPink = (255, 209, 220)
 pastelBlueGreen = (214, 239, 229)
@@ -16,6 +17,8 @@ pastelYellow = (253, 253, 150)
 pastelGreen = (152, 251, 152)
 pastelBlue = (119, 158, 203)
 pastelPurple = (177, 156, 217)
+greenbutton = (0, 195,61)
+greenbutton_clicked = (0,129,40)
 
 # initialize the dimension of your screen
 width = 1024
@@ -61,15 +64,24 @@ monitor_height = right_pane_height*4/5
 
 #CodeButtons
 codebutton_width = left_pane_width*2/3
-codebutton_height = tileSize_puzzle/2
+codebutton_height = tileSize_puzzle
+
+#CodeButtons
+delbutton_width = tileSize*1.5
+delbutton_height = tileSize_puzzle*0.9
 
 #CompScreen
 screen_width = right_pane_width - 4*tileSize_puzzle
 screen_height = monitor_height - 4*tileSize_puzzle
 
 #ScreenText
-stext_width = screen_width
+stext_width = screen_width*8/9
 stext_height = tileSize_puzzle/2
 
-#Computer States
+#Computer and Door States
 Computer_States = [0,0,0,0,0,0]
+Door_States = [0,0,0,0,0,0]
+
+
+#Door Passwords
+Door_Passwords = ['bakit', 'malumanay', 'ang','tawag','ng','hangin']
