@@ -5,15 +5,14 @@ CompName = 'Comp0'
 
 PuzzleSolved = False
 
-PuzzleLines = [ 'Test Line 1',
-				'      Test Line 2',
-				'          Test Line 3',
-				':',
-				'Test Line 5'
+PuzzleLines = [ 'V = 4.0/3.0*n1*n2**3',
+				'n2 = 6.0',
+				'n1 = 3.1415',
+				'print("The volume of the sphere is: ", V)',
 				]
 
 
-PuzzleAnswer = [4,3,2,1,0]
+PuzzleAnswer = [2,1,0,3]
 
 
 def SaveMyState(screentext):

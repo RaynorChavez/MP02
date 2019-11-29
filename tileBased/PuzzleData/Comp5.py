@@ -5,15 +5,19 @@ CompName = 'Comp5'
 
 PuzzleSolved = False
 
-PuzzleLines = [ 'Test Line 1',
-				'      Test Line 2',
-				'          Test Line 3',
-				':',
-				'Test Line 5'
+PuzzleLines = [ 'List = [1,1,2,2,4,6]',
+				'print("Count of each item: ", countDict)',
+				'for item in List:',
+				'   else:',
+				'   if (item in countDict):',
+				'countDict = dict()',
+				'      countDict[item] += 1',
+				'      countDict[item] = 1',
+				'print("Original list: ", List)',
 				]
 
 
-PuzzleAnswer = [4,3,2,1,0]
+PuzzleAnswer = [0,8,5,2,4,6,3,7,1]
 
 
 def SaveMyState(screentext):

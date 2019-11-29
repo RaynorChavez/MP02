@@ -5,15 +5,15 @@ CompName = 'Comp1'
 
 PuzzleSolved = False
 
-PuzzleLines = [ 'Comp1',
-				'      Test Line 2',
-				'          Test Line 3',
-				':',
-				'Test Line 5'
+PuzzleLines = [ 'n3 = int( "%s%s%s" % (a,a,a) )',
+				'a = int(input("Input an integer : "))',
+				'print(n1 + n2 + n3)',
+				'n1 = int( "%s" % a)',
+				'n2 = int( "$s$s" % (a,a) )'
 				]
 
 
-PuzzleAnswer = [4,3,2,1,0]
+PuzzleAnswer = [1,3,4,0,2]
 
 
 def SaveMyState(screentext):

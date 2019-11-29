@@ -5,15 +5,16 @@ CompName = 'Comp3'
 
 PuzzleSolved = False
 
-PuzzleLines = [ 'Test Line 1',
-				'      Test Line 2',
-				'          Test Line 3',
-				':',
-				'Test Line 5'
+PuzzleLines = [ '   middleIndex = int(len(sampleStr) /2)',
+				'   middleThree = sampleStr[middleIndex-1:middleIndex+2',
+				'   print("Middle three chr", middleThree)',
+				'   print("Original String is", sampleStr)',
+				'def getMiddlethreechr(sampleStr)',
+				'getMiddlethreechr("JhonDipPeta)'
 				]
 
 
-PuzzleAnswer = [4,3,2,1,0]
+PuzzleAnswer = [4,0,3,1,2,5]
 
 
 def SaveMyState(screentext):

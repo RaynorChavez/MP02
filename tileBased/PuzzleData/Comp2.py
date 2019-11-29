@@ -5,15 +5,20 @@ CompName = 'Comp2'
 
 PuzzleSolved = False
 
-PuzzleLines = [ 'Test Line 1',
-				'      Test Line 2',
-				'          Test Line 3',
-				':',
-				'Test Line 5'
+PuzzleLines = [ 'n2 = int(input("Enter second number"))',
+				'print("The result is", result)',
+				'   product = num1 * num2',
+				'   else:',
+				'def multiplication_or_sum(num1, num2)',
+				'   if (product < 1000):',
+				'n1 = int(input("Enter first number"))',
+				'      return product',
+				'      return num1 + num2',
+				'result = multiplication_or_sum(n1, n2)',
 				]
 
 
-PuzzleAnswer = [4,3,2,1,0]
+PuzzleAnswer = [4,2,5,7,3,8,6,9,1]
 
 
 def SaveMyState(screentext):

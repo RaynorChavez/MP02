@@ -5,15 +5,16 @@ CompName = 'Comp4'
 
 PuzzleSolved = False
 
-PuzzleLines = [ 'Test Line 1',
-				'      Test Line 2',
-				'          Test Line 3',
-				':',
-				'Test Line 5'
+PuzzleLines = [ 'for char in inputStr:',
+				'inputStr = "pynativepynvepynative"',
+				'print(countDict)',
+				'   count = inputStr.count(char)',
+				'   countDict[char]=count',
+				'countDict = dict()',
 				]
 
 
-PuzzleAnswer = [4,3,2,1,0]
+PuzzleAnswer = [1,5,0,3,4,2]
 
 
 def SaveMyState(screentext):
