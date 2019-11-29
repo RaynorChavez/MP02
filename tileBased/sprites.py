@@ -190,11 +190,13 @@ class Clickme(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = myimage
+		self.image = pg.transform.scale(self.image, (int(tileSize*2), int(tileSize/2)))
+		self.image.set_colorkey(white)
 		self.rect = self.image.get_rect()
 		self.x = x
 		self.y = y
 		self.rect.midbottom = (self.x, self.y)
-		self.image = pg.transform.scale(self.image, (int(tileSize*2), int(tileSize/2)))
+
 		Text_inSprite(self.image, 'Press Space', 20, black)
 		self.spawn_time = pg.time.get_ticks()
 
@@ -234,7 +236,7 @@ class Timer(pg.sprite.Sprite):
 		self.seconds = int(self.remain_time/1000 - self.minutes*60)
 		self.image.fill(black)
 		Text_inSprite(self.image, '{} : {}'.format(self.minutes,self.seconds), 35, red, True)
-		print('{} : {}'.format(self.minutes,self.seconds))
+		#print('{} : {}'.format(self.minutes,self.seconds))
 
 	def gameover(self):
 		if self.remain_time <= 0:

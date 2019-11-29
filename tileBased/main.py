@@ -36,7 +36,8 @@ class Game():
 		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert()
 		self.playerImage.set_colorkey(white)
 		self.clickme_img = pg.image.load(path.join(imageFolder, 'clickme.png')).convert()
-		self.clickme_img.set_colorkey(white)
+		
+		
 	
 	def new(self):
 		# Game restart
@@ -71,6 +72,7 @@ class Game():
 					self.doors[i] = Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
 
 		self.timer = Timer(self, self.start_time)
+		#self.clickmetest = Clickme(self, 5, 5, self.clickme_img)
 
 		self.camera = Camera(self.map.width, self.map.height)
 
@@ -124,7 +126,7 @@ class Game():
 			self.timer.update()
 
 
-		#If puzzle is solved on COmputer x, corresponding door is killed
+		#If puzzle is solved on Computer x, corresponding door is killed
 		for i in range(6):
 			if Door_States[i] == 1:
 				self.doors[i].kill()
