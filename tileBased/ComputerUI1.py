@@ -31,6 +31,8 @@ class ComputerUI(pg.sprite.Sprite):
 				#print(self.m.CompName)
 				self.reference_no = i
 
+		print('computer ', self.reference_no)
+
 		#Initializes Variables
 		self.variables()
 
@@ -57,7 +59,7 @@ class ComputerUI(pg.sprite.Sprite):
 		
 		#Generating button Sprites
 		for index, puzzleline in enumerate(self.m.PuzzleLines):
-			self.CodeButtons.append(CodeButton(self.game, self.LeftPane.rect.centerx, self.Instructions.rect.height + tileSize_puzzle*(len(self.CodeButtons) + 1) + tileSize_puzzle/2, puzzleline))
+			self.CodeButtons.append(CodeButton(self.game, self.LeftPane.rect.centerx, self.Instructions.rect.height + tileSize_puzzle*1.1*(len(self.CodeButtons) + 1) + tileSize_puzzle/2, puzzleline))
 
 		#Loading Old Computer State
 		start_len = len(self.playanswers)
@@ -144,7 +146,7 @@ class Leftpane(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = pg.Surface((left_pane_width, left_pane_height))
-		self.image.fill(pastelBlue)
+		self.image.fill(black)
 		self.rect = self.image.get_rect()
 		self.rect.topright = (width,0)
 

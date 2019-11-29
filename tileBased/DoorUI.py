@@ -35,7 +35,7 @@ class DoorUI(pg.sprite.Sprite):
 		for i in range(len(game.doors)):
 			if activated_door == game.doors[i]:
 				self.reference_no = i
-
+		print("door", self.reference_no)
 		self.Statusline = Status(self.game, 'Enter Password')
 		self.Input = TextBox(self.game,self.reference_no,width/2,height/2,width*2/6,height*1/16)
 
@@ -76,7 +76,9 @@ class TextBox(pg.sprite.Sprite):
 				if event.key == pg.K_RETURN:
                 	#checks if submitted password is correct
 					print(self.text)
+					print('return. check: ', Door_Passwords[self.door_no])
 					if self.text == Door_Passwords[self.door_no]:
+						print(Door_Passwords[self.door_no])
 						print('you got it right')
 						Door_States[self.door_no] = 1
 					else:

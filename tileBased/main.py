@@ -14,6 +14,8 @@ class Game():
 	def __init__(self):
 		#print('here1')
 		self.mouseclick = (0,0)
+		self.start_time = pg.time.get_ticks()
+
 		# summary: Initialize game and create the window
 		pg.init() # initializes pygame and gets it ready to go
 		pg.mixer.init() # if you wish to add sound
@@ -33,12 +35,14 @@ class Game():
 		self.mapRect = self.mapImg.get_rect()
 		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert()
 		self.playerImage.set_colorkey(white)
+		self.clickme_img = pg.image.load(path.join(imageFolder, 'clickme.png')).convert()
+		self.clickme_img = pg.transform.scale(self.clickme_img, (int(tileSize*2), int(tileSize/2)))
+		self.clickme_img.set_colorkey(white)
 	
 	def new(self):
-		#print('here2')
 		# Game restart
-		self.comps = []
-		self.doors = []
+		self.comps = [0,0,0,0,0,0]
+		self.doors = [0,0,0,0,0,0]
 		self.allSprites = pg.sprite.Group()
 		self.walls = pg.sprite.Group()
 		self.computers = pg.sprite.Group()
@@ -53,37 +57,22 @@ class Game():
 		self.savebuttons = pg.sprite.Group()
 		self.doorgroup = pg.sprite.Group()
 		self.textbox = pg.sprite.Group()
+		self.timegroup = pg.sprite.Group()
+		self.gameovergroup = pg.sprite.Group()
 
 		for tileObject in self.map.tmxdata.objects:
 			if tileObject.name == "player":
 				self.player = Player(self, tileObject.x, tileObject.y)
 			if tileObject.name == "wall":
 				Obstacle(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
-			if tileObject.name == "computer 0":
-				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "computer 1":
-				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "computer 2":
-				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "computer 3":
-				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "computer 4":
-				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "computer 5":
-				self.comps.append(Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "door 0":
-				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "door 1":
-				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "door 2":
-				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "door 3":
-				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "door 4":
-				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-			if tileObject.name == "door 5":
-				self.doors.append(Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height))
-		
+			for i in range(6):
+				if tileObject.name == "computer {}".format(i):
+					self.comps[i] = Computer(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+				if tileObject.name == "door {}".format(i):
+					self.doors[i] = Door(self, tileObject.x, tileObject.y, tileObject.width, tileObject.height)
+
+		self.timer = Timer(self, self.start_time)
+
 		self.camera = Camera(self.map.width, self.map.height)
 
 	def run(self):
@@ -125,13 +114,18 @@ class Game():
 
 	def update(self):
 		# Game loop - update
-		if not self.CompON: #Freezes all sprites within the game except puzzlesprites
+
+		if self.timer.gameover():
+			self.playing = False
+			self.timer.kill()
+		if not self.CompON and self.playing: #Freezes all sprites within the game except puzzlesprites
 			self.allSprites.update()
-		self.puzzlesprites.update()
+		if self.playing:
+			self.puzzlesprites.update()
+			self.timer.update()
 
-		#print(Door_States)
 
-		#I Puzzle is solved on COmputer x, corresponding door is killed
+		#If puzzle is solved on COmputer x, corresponding door is killed
 		for i in range(6):
 			if Door_States[i] == 1:
 				self.doors[i].kill()
@@ -151,7 +145,7 @@ class Game():
 		#check if player hits an interactable and Spawns a Clickme Popup
 		self.hits = pg.sprite.spritecollide(self.player,self.interactable, False, pg.sprite.collide_circle)
 		for hit in self.hits:
-			Clickme(self, hit.x, hit.y) #Calls a Clickme Popup
+			Clickme(self, hit.rect.centerx, hit.rect.y, self.clickme_img) #Calls a Clickme Popup
 			if (self.computers in hit.groups) and self.space and not self.CompON: #Checks if a computer was hit and if spacebar is pressed
 				self.CompON = True
 				self.CompUI = ComputerUI(self, hit)
@@ -173,11 +167,15 @@ class Game():
 		self.screen.blit(self.mapImg, self.camera.applyRect(self.mapRect))
 		for sprite in self.allSprites:
 			self.screen.blit(sprite.image, self.camera.apply(sprite))
-
 		for sprite in self.puzzlesprites:
+			self.screen.blit(sprite.image, sprite.rect)
+		for sprite in self.timegroup:
 			self.screen.blit(sprite.image, sprite.rect)
 		for textbox in self.textbox:
 			textbox.draw(self.screen)
+		for sprite in self.gameovergroup:
+			self.screen.blit(sprite.image, sprite.rect)
+
 		pg.display.flip() # ALWAYS DO THIS LAST *After you draw everything*
 
 	def drawGrid(self):
@@ -192,10 +190,11 @@ class Game():
 
 	def showGameOver(self):
 		# Game over / continue
+		###### DITO IPASOK ANG MAIN MENU ######
+		self.kill()
 		pass
 
 g = Game()
-
 g.showStartScreen()
 
 while True:

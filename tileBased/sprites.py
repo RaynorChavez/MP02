@@ -185,17 +185,17 @@ class Door(pg.sprite.Sprite):
 		self.rect.y = y
 
 class Clickme(pg.sprite.Sprite):
-	def __init__(self, game, x, y):
+	def __init__(self, game, x, y, myimage):
 		self.groups = game.allSprites, game.clickme # initializes what group you'll be part of
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
-		self.image = pg.Surface((tileSize*2, tileSize/2))
-		self.image.fill(white)
+		self.image = myimage
+		#self.image.fill(white)
 		self.rect = self.image.get_rect()
 		self.x = x
-		self.y = y - 1
-		self.rect.x = x
-		self.rect.y = y - 1
+		self.y = y
+		self.rect.midbottom = (self.x, self.y)
+		#print(self.x,self.y)
 		Text_inSprite(self.image, 'Press Space', 20, black)
 		self.spawn_time = pg.time.get_ticks()
 
@@ -215,3 +215,40 @@ class Movable(pg.sprite.Sprite):
 		self.rect.x = x
 		self.rect.y = y
 
+class Timer(pg.sprite.Sprite):
+	def __init__(self, game, start_time): 
+		self.groups = game.timegroup # initializes what group you'll be part of
+		pg.sprite.Sprite.__init__(self, self.groups)
+		self.game = game
+		self.image = pg.Surface((width, 20))
+		self.image.set_colorkey(black)
+		self.rect = self.image.get_rect()
+		self.rect.midtop = (width/2,5)
+
+		self.start_time = start_time
+		self.remain_time = countdown_millisec
+		
+
+	def update(self):
+		self.remain_time = countdown_millisec - (pg.time.get_ticks() - self.start_time)
+		self.minutes = int(self.remain_time/1000/60)
+		self.seconds = int(self.remain_time/1000 - self.minutes*60)
+		self.image.fill(black)
+		Text_inSprite(self.image, '{} : {}'.format(self.minutes,self.seconds), 35, red, True)
+		print('{} : {}'.format(self.minutes,self.seconds))
+
+	def gameover(self):
+		if self.remain_time <= 0:
+			return True
+		else:
+			return False
+
+class GameOverScreen(pg.sprite.Sprite):
+	def __init__(self, game):
+		self.groups = game.gameovergroup
+		pg.sprite.Sprite.__init__(self)
+		self.game = game
+		self.image = pg.Surface((width, height))
+		self.image.set_colorkey(red)
+		self.rect = self.image.get_rect()
+		self.rect.midtop = (0,0)

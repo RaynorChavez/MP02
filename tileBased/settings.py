@@ -2,6 +2,10 @@
 GAME OPTIONS/SETTINGS
 """
 
+#Countdown
+countdown_minutes = 30
+countdown_millisec = countdown_minutes*60000
+
 # You can define useful colors that you may need again eg.
 red = (255, 0, 0)
 blue = (0, 0, 255)
@@ -19,6 +23,7 @@ pastelBlue = (119, 158, 203)
 pastelPurple = (177, 156, 217)
 greenbutton = (0, 195,61)
 greenbutton_clicked = (0,129,40)
+brownish = (131,121,81)
 
 # initialize the dimension of your screen
 width = 1024
@@ -34,7 +39,7 @@ gridWidth = width / tileSize
 gridHeight = height / tileSize
 
 #Player settings
-playerSpeed = 250
+playerSpeed = 500
 playerRotSpeed = 500
 playerImg = "Down001.png"
 
@@ -84,4 +89,5 @@ Door_States = [0,0,0,0,0,0]
 
 
 #Door Passwords
-Door_Passwords = ['bakit', 'malumanay', 'ang','tawag','ng','hangin']
+Door_Passwords = ['0', '1', '2','3','4','5']
+
