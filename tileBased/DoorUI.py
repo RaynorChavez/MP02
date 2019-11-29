@@ -25,7 +25,7 @@ class DoorUI(pg.sprite.Sprite):
 		self.groups = game.puzzlesprites # initializes what group you'll be part of
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
-		self.image = pg.Surface((width*5/6,height*5/6))
+		self.image = pg.Surface((width,height))
 		self.image.fill(black)
 		self.rect = self.image.get_rect()
 		self.rect.center = (width/2,height/2)

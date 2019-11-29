@@ -14,7 +14,7 @@ class Text_inSprite(pg.sprite.Sprite):
 		if center == True:
 			self.text_rect = self.text_surface.get_rect(center=surf.get_rect().center)
 		else:
-			self.text_rect = self.text_surface.get_rect().move(20,surf.get_rect().height/2 - self.text_surface.get_rect().height/2)
+			self.text_rect = self.text_surface.get_rect().move(15,surf.get_rect().height/2 - self.text_surface.get_rect().height/2)
 		surf.blit(self.text_surface, self.text_rect)
 
 class Player(pg.sprite.Sprite):
@@ -190,12 +190,11 @@ class Clickme(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = myimage
-		#self.image.fill(white)
 		self.rect = self.image.get_rect()
 		self.x = x
 		self.y = y
 		self.rect.midbottom = (self.x, self.y)
-		#print(self.x,self.y)
+		self.image = pg.transform.scale(self.image, (int(tileSize*2), int(tileSize/2)))
 		Text_inSprite(self.image, 'Press Space', 20, black)
 		self.spawn_time = pg.time.get_ticks()
 
@@ -223,7 +222,7 @@ class Timer(pg.sprite.Sprite):
 		self.image = pg.Surface((width, 20))
 		self.image.set_colorkey(black)
 		self.rect = self.image.get_rect()
-		self.rect.midtop = (width/2,5)
+		self.rect.midtop = (width/2,10)
 
 		self.start_time = start_time
 		self.remain_time = countdown_millisec

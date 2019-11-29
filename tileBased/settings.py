@@ -24,6 +24,7 @@ pastelPurple = (177, 156, 217)
 greenbutton = (0, 195,61)
 greenbutton_clicked = (0,129,40)
 brownish = (131,121,81)
+codebutton_color = (148,183,0)
 
 # initialize the dimension of your screen
 width = 1024
@@ -56,8 +57,8 @@ left_pane_height = height
 left_pane_topright = (width, 0)
 
 #Instruction Box
-instruction_width = left_pane_width - 2*tileSize_puzzle
-instruction_height = left_pane_width - 2*tileSize_puzzle
+instruction_width = left_pane_width - 1*tileSize_puzzle
+instruction_height = left_pane_width - 3*tileSize_puzzle
 
 #Hard Disk Bay
 hdd_width = right_pane_width
@@ -68,7 +69,7 @@ monitor_width = right_pane_width
 monitor_height = right_pane_height*4/5
 
 #CodeButtons
-codebutton_width = left_pane_width*2/3
+codebutton_width = left_pane_width*9/10
 codebutton_height = tileSize_puzzle
 
 #CodeButtons

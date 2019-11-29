@@ -51,7 +51,7 @@ class ComputerUI(pg.sprite.Sprite):
 
 		self.LeftPane = Leftpane(self.game, )
 		self.RightPane = Rightpane(self.game, )
-		self.Instructions = Instructions(self.game, self.LeftPane.rect.centerx, tileSize_puzzle)
+		self.Instructions = Instructions(self.game, self.LeftPane.rect.centerx, tileSize_puzzle, self.reference_no)
 		self.Monitor = Monitor(self.game, self.RightPane.rect.centerx, 0)
 		self.Screen = CompScreen(self.game, self.RightPane.rect.centerx, 3*tileSize_puzzle)
 		self.HDD = HardDiskBay(self.game, self.RightPane.rect.centerx, self.Monitor.rect.height)
@@ -164,6 +164,7 @@ class CompScreen(pg.sprite.Sprite):
 
 class CodeButton(pg.sprite.Sprite):
 	def __init__(self, game, x, y, puzzleline):
+		self.puzzleline = puzzleline
 		self.load_images()
 		self.click_time = pg.time.get_ticks()
 		self.clicked = False
@@ -175,8 +176,9 @@ class CodeButton(pg.sprite.Sprite):
 		#self.image.set_colorkey(white)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
-		self.puzzleline = puzzleline
-		Text_inSprite(self.image, self.puzzleline, 20, black)
+		
+
+		#Text_inSprite(self.image, self.puzzleline, 20, greenbutton)
 
 	def load_images(self):
 		self.gameFolder = path.dirname(__file__)
@@ -187,6 +189,7 @@ class CodeButton(pg.sprite.Sprite):
 		self.clicked_img = pg.transform.scale(self.clicked_img, (int(codebutton_width), int(codebutton_height)))
 		self.normal_img.set_colorkey(white)
 		self.clicked_img.set_colorkey(white)
+		Text_inSprite(self.normal_img, self.puzzleline, 20, greenbutton)
 
 	def Clicked(self):
 		self.image = self.clicked_img
@@ -199,7 +202,7 @@ class CodeButton(pg.sprite.Sprite):
 		if (now - self.click_time) > 100 and self.Clicked:
 			self.image = self.normal_img
 			#self.image.set_colorkey(white)
-			Text_inSprite(self.image, self.puzzleline, 20, black)
+			#Text_inSprite(self.image, self.puzzleline, 20, greenbutton)
 			self.clicked = False
 
 class ScreenText(pg.sprite.Sprite):
@@ -252,12 +255,17 @@ class HardDiskBay(pg.sprite.Sprite):
 		#self.hdd_img.set_colorkey(white)
 
 class Instructions(pg.sprite.Sprite):
-	def __init__(self, game, x, y):
+	def __init__(self, game, x, y, reference_no):
 		self.groups = game.puzzlesprites # initializes what group you'll be part of
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
-		self.image = pg.Surface((instruction_width, instruction_height))
-		self.image.fill(white)
+
+		self.gameFolder = path.dirname(__file__)
+		self.imageFolder = path.join(path.join(self.gameFolder, "images"),"Instructions")
+		self.inst_img = pg.image.load(path.join(self.imageFolder, 'Instructions{}.png'.format(reference_no))).convert()
+		self.inst_img = pg.transform.smoothscale(self.inst_img, (int(instruction_width), int(instruction_height)))
+		self.image = self.inst_img
+		#self.image.fill(white)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
 

@@ -36,13 +36,12 @@ class Game():
 		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert()
 		self.playerImage.set_colorkey(white)
 		self.clickme_img = pg.image.load(path.join(imageFolder, 'clickme.png')).convert()
-		self.clickme_img = pg.transform.scale(self.clickme_img, (int(tileSize*2), int(tileSize/2)))
 		self.clickme_img.set_colorkey(white)
 	
 	def new(self):
 		# Game restart
 		self.comps = [0,0,0,0,0,0]
-		self.doors = [0,0,0,0,0,0]
+		self.doors = [0,0,0,0,0,0,0]
 		self.allSprites = pg.sprite.Group()
 		self.walls = pg.sprite.Group()
 		self.computers = pg.sprite.Group()
