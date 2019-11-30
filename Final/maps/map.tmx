@@ -789,7 +789,7 @@
   <object id="228" name="door 6" x="2754.44" y="2565.7" width="185.128" height="186.59"/>
   <object id="229" name="computer 2" x="3012.31" y="2496.59" width="33.3887" height="62.8129"/>
   <object id="230" name="computer 2" x="3012.31" y="2496.59" width="33.3887" height="62.8129"/>
-  <object id="231" name="computer 7" x="3012.31" y="2496.59" width="33.3887" height="62.8129"/>
+  <object id="231" name="computer 6" x="3012.31" y="2496.59" width="33.3887" height="62.8129"/>
  </objectgroup>
  <layer id="9" name="objects" width="88" height="43">
   <data encoding="csv">
