@@ -2,7 +2,7 @@
 GAME OPTIONS/SETTINGS
 """
 #Countdown
-countdown_minutes = 30
+countdown_minutes = 10
 countdown_millisec = countdown_minutes*60000
 
 # You can define useful colors that you may need again eg.
@@ -15,6 +15,7 @@ white = (255, 255, 255)
 pastelPink = (255, 209, 220)
 pastelBlueGreen = (214, 239, 229)
 pastelRed = (255, 105, 97)
+bloodRed = (138, 3, 3)
 pastelOrange = (255, 179, 71)
 pastelYellow = (253, 253, 150)
 pastelGreen = (152, 251, 152)
@@ -22,6 +23,7 @@ pastelBlue = (119, 158, 203)
 pastelPurple = (177, 156, 217)
 greenbutton = (0, 195,61)
 greenbutton_clicked = (0,129,40)
+gold = (212, 175, 55)
 brownish = (131,121,81)
 codebutton_color = (148,183,0)
 
@@ -48,7 +50,7 @@ gridWidth = width / tileSize
 gridHeight = height / tileSize
 
 #Player settings
-playerSpeed = 500
+playerSpeed = 250
 playerRotSpeed = 500
 playerImg = "Down001.png"
 
@@ -105,4 +107,4 @@ Door_States = [0,0,0,0,0,0,0]
 
 
 #Door Passwords
-Door_Passwords = ['programming', 'is an', 'exercise','in','creative','thinking', 'programming is an exercise in creative thinking']
+Door_Passwords = ['exercise', 'thinking', 'programming','creative','in','is an', 'h']

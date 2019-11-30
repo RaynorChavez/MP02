@@ -37,7 +37,7 @@ class DoorUI(pg.sprite.Sprite):
 				self.reference_no = i
 
 		self.Statusline = Status(self.game, 'Enter Password')
-		self.Input = TextBox(self.game,self.reference_no,width/2,height/2,width*11/20,height*1/16)
+		self.Input = TextBox(self.game,self.reference_no,width/2,height/2,width*52/100,height*1/16)
 
 	def update(self):
 		if Door_States[self.reference_no] == 1:
@@ -46,7 +46,7 @@ class DoorUI(pg.sprite.Sprite):
 
 class TextBox(pg.sprite.Sprite):
 	def __init__(self, game, door_no, x, y, w, h, text=''):
-		#print('textboxinitialized')
+		print('textboxinitialized')
 		self.groups = game.puzzlesprites, game.textbox # initializes what group you'll be part of
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.door_no = door_no
@@ -59,7 +59,6 @@ class TextBox(pg.sprite.Sprite):
 		self.text = text
 		self.txt_surface = self.font.render(text, True, self.color)
 		self.active = False
-
 
 	def handle_event(self, event):
 		if event.type == pg.MOUSEBUTTONDOWN:
@@ -77,10 +76,10 @@ class TextBox(pg.sprite.Sprite):
                 	#checks if submitted password is correct
 					print(self.text)
 					if self.text == Door_Passwords[self.door_no]:
-						#print('you got it right')
+						print('you got it right')
 						Door_States[self.door_no] = 1
-					#else:
-						#print('you got it wrong')
+					else:
+						print('you got it wrong')
 					self.text = ''
 				elif event.key == pg.K_BACKSPACE:
 					self.text = self.text[:-1]
@@ -89,18 +88,11 @@ class TextBox(pg.sprite.Sprite):
                 # Re-render the text.
 				self.txt_surface = self.font.render(self.text, True, self.color)
 
-	def update(self):
-		# Resize the box if the text is too long.
-		#width = max(200, self.txt_surface.get_width()+10)
-		#self.rect.w = width
-		pass
-
 	def draw(self, screen):
 		# Blit the text.
 		screen.blit(self.txt_surface, (self.rect.x+10, self.rect.y+13))
 		# Blit the rect.
 		pg.draw.rect(screen, self.color, self.rect, 2)
-
 
 class Status(pg.sprite.Sprite):
 	def __init__(self, game, status):

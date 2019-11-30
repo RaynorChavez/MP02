@@ -4,10 +4,14 @@ from pyglet.window import mouse
 from pyglet.gl import *
 from os import path
 
+
+
 gameFolder = path.dirname(__file__)
 imageFolder = path.join(gameFolder, "images")
 
 window = pyglet.window.Window(500,500)
+x, y = window.get_location()
+window.set_location(x + 390, y + 50)
 
 class StartGameButton(pyglet.sprite.Sprite):
 	def __init__(self, width,height):

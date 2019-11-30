@@ -10,6 +10,12 @@ from tileMap import *
 from ComputerUI1 import *
 from DoorUI import *
 import importlib
+import random
+
+x = 0
+y = 0
+import os
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x + 250, y + 40)
 
 class Game():
 	def __init__(self):
@@ -56,13 +62,19 @@ class Game():
 		mapFolder = path.join(gameFolder, "maps")
 		soundFolder = path.join(gameFolder, "SFX")
 		fontFolder = path.join(gameFolder, "Fonts")
-
+		deathPics = path.join(imageFolder, "Death")
+		
 		# Map loading
 		self.map = TiledMap(path.join(mapFolder, "map.tmx"))
 		self.mapImg = self.map.makeMap()
 		self.mapRect = self.mapImg.get_rect()
 
 		# Image Loading
+		self.deathCause = []
+		for i in range(7):
+			fileName = f"Death00{i}.png"
+			img = pg.image.load(path.join(deathPics, fileName)).convert()
+			self.deathCause.append(img)
 		self.playerImage = pg.image.load(path.join(imageFolder, playerImg)).convert()
 		self.floor1Image = pg.image.load(path.join(imageFolder, floor1)).convert_alpha()
 		self.floor2Image = pg.image.load(path.join(imageFolder, floor2)).convert_alpha()
@@ -88,6 +100,8 @@ class Game():
 
 		# Fonts loading
 		self.titleFont = path.join(fontFolder, "Old School Adventures.ttf")
+		self.introTitleFont = path.join(fontFolder, "TheWildBreathOfZelda-15Lv.ttf")
+		self.otherFonts = path.join(fontFolder, "PixelAzureBonds-327Z.ttf")
 
 
 		self.clickme_img = pg.image.load(path.join(imageFolder, 'clickme.png')).convert()
@@ -163,13 +177,14 @@ class Game():
 						os.remove("Comp{}.pickle".format(i))
 				self.quit()
 			if event.type == pg.KEYDOWN:
-				if event.key == pg.K_ESCAPE:
-					for sprites in self.puzzlesprites:
-						sprites.kill()
-					self.CompON = False
+				if self.pause == False:
+					if event.key == pg.K_ESCAPE:
+						for sprites in self.puzzlesprites:
+							sprites.kill()
+						self.CompON = False
 				if event.key == pg.K_SPACE:
 					self.space = True
-				if event.key == pg.K_p and event.key == (pg.K_LCTRL or pg.KRCTRL):
+				if event.key == pg.K_p and pg.key.get_mods() & pg.KMOD_LCTRL or event.key == pg.K_p and pg.key.get_mods() & pg.KMOD_RCTRL:
 					self.pause = not self.pause
 			if event.type == pg.MOUSEBUTTONUP:
       				self.mouseclick = pg.mouse.get_pos()
@@ -180,9 +195,11 @@ class Game():
 	def update(self):
 		# Game loop - update
 
+		if self.player.rect.top > 2752:
+			self.showGameOver()
+
 		if self.timer.gameover():
-			print('quitting')
-			self.playing = False
+			self.timeOut()
 			self.timer.kill()
 		if not self.CompON and self.playing: #Freezes all sprites within the game except puzzlesprites
 			self.allSprites.update()
@@ -276,20 +293,57 @@ class Game():
 		for sprite in self.timegroup:
 			self.screen.blit(sprite.image, sprite.rect)
 
+
+
 		if self.pause:
 			self.draw_text("PAUSED", self.titleFont, 105, white, width/2, height/2, align = "center")
 
+		self.draw_text("PAUSE: ctrl + p", self.titleFont, 12, white, 15, 15, align = "w")
 		pg.display.flip() # ALWAYS DO THIS LAST *After you draw everything*
 
 	def showStartScreen(self):
 		# game splash / start screen
-		pass
+		self.screen.fill(black)
+		self.draw_text("Nightmare", self.introTitleFont, 220, bloodRed, width/2, height/3, align = "center")
+		self.draw_text("         in DCS", self.introTitleFont, 220, bloodRed, width/2, height/2, align = "center")
+		self.draw_text("Arrows or ASWD to move", self. otherFonts, 22, white, width / 2, height *63/100, align = "center")
+		self.draw_text("ESC to exit computers or doors", self. otherFonts, 22, white, width / 2, height * 2/3, align = "center")
+		self.draw_text("Press ENTER to play", self. otherFonts, 22, white, width / 2, height * 4/5, align = "center")
+		pg.display.flip()
+		self.wait_for_key()
 
 	def showGameOver(self):
-		# Game over / continue
-		###### DITO IPASOK ANG MAIN MENU ######
-		print('gameover')
-		self.quit()
+		if not self.playing:
+			return
+
+		self.screen.fill(black)
+		self.draw_text("CONGRATS!!!", self.titleFont, 50, gold, width/2, height/4, align = "center")
+		self.draw_text("You escaped successfully", self.titleFont, 50, gold, width/2, height * 38/100, align = "center")
+		self.draw_text("Press ESC to exit", self. otherFonts, 22, white, width / 2, height * 4/5, align = "center")
+		pg.display.flip()
+		self.wait_for_key()
+
+	def timeOut(self):
+		self.randImg = random.choice(self.deathCause)
+		self.screen.blit(self.randImg, (0,0))
+		pg.display.flip()
+		self.wait_for_key()
+
+	def wait_for_key(self):
+		waiting = True
+		while waiting:
+			self.clock.tick(FPS)
+			for event in pg.event.get():
+				if event.type == pg.QUIT:
+					waiting = False
+					self.quit()
+				if event.type == pg.KEYDOWN:
+					if event.key == pg.K_RETURN:
+						waiting = False
+					if event.key == pg.K_ESCAPE:
+						self.quit()
+
+
 
 def StartGame():
 	g = Game()

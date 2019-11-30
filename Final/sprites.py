@@ -2,6 +2,7 @@
 import pygame as pg
 from settings import *
 from os import path
+from engine import *
 vec = pg.math.Vector2
 
 font_name = pg.font.match_font('arial')

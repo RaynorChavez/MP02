@@ -26,12 +26,8 @@ class ComputerUI(pg.sprite.Sprite):
 		for i in range(len(game.comps)):
 			if oncomputer == game.comps[i]:
 				self.computer_file = 'Comp{}'.format(i)
-				#print(self.computer_file)
 				self.m = eval('PuzzleData.Comp{}'.format(i))
-				#print(self.m.CompName)
 				self.reference_no = i
-
-		print('computer ', self.reference_no)
 
 		#Initializes Variables
 		self.variables()
@@ -59,7 +55,7 @@ class ComputerUI(pg.sprite.Sprite):
 		
 		#Generating button Sprites
 		for index, puzzleline in enumerate(self.m.PuzzleLines):
-			self.CodeButtons.append(CodeButton(self.game, self.LeftPane.rect.centerx, self.Instructions.rect.height + tileSize_puzzle*1.1*(len(self.CodeButtons) + 1) + tileSize_puzzle/2, puzzleline))
+			self.CodeButtons.append(CodeButton(self.game, self.LeftPane.rect.centerx, self.Instructions.rect.height + tileSize_puzzle*(len(self.CodeButtons) + 1) + tileSize_puzzle/2, puzzleline))
 
 		#Loading Old Computer State
 		start_len = len(self.playanswers)
@@ -70,7 +66,6 @@ class ComputerUI(pg.sprite.Sprite):
 		
 	def variables(self):
 		self.playanswers = self.m.LoadMyMemories()
-		#print('playanswers', self.playanswers)
 		self.CodeButtons = []
 		self.screen_text = []
 		self.playable = True
@@ -127,7 +122,7 @@ class ComputerUI(pg.sprite.Sprite):
 
 	def save(self):
 		self.m.SaveMyState(self.playanswers)
-
+		
 	
 #Sprites
 class Rightpane(pg.sprite.Sprite):
@@ -157,7 +152,6 @@ class CompScreen(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = pg.Surface((screen_width,screen_height))
-		#self.image.fill(black)
 		self.image.set_colorkey(black)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
@@ -173,12 +167,8 @@ class CodeButton(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = self.normal_img
-		#self.image.set_colorkey(white)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
-		
-
-		#Text_inSprite(self.image, self.puzzleline, 20, greenbutton)
 
 	def load_images(self):
 		self.gameFolder = path.dirname(__file__)
@@ -193,7 +183,6 @@ class CodeButton(pg.sprite.Sprite):
 
 	def Clicked(self):
 		self.image = self.clicked_img
-		#self.image.set_colorkey(white)
 		self.click_time = pg.time.get_ticks()
 		self.clicked = True
 
@@ -201,8 +190,6 @@ class CodeButton(pg.sprite.Sprite):
 		now = pg.time.get_ticks()
 		if (now - self.click_time) > 100 and self.Clicked:
 			self.image = self.normal_img
-			#self.image.set_colorkey(white)
-			#Text_inSprite(self.image, self.puzzleline, 20, greenbutton)
 			self.clicked = False
 
 class ScreenText(pg.sprite.Sprite):
@@ -211,12 +198,10 @@ class ScreenText(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = pg.Surface((stext_width,stext_height))
-		#self.image.fill(black)
 		self.image.set_colorkey(black)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
 		Text_inSprite(self.image, text, 20, green)
-		
 
 class Monitor(pg.sprite.Sprite):
 	def __init__(self, game, x, y):
@@ -225,7 +210,6 @@ class Monitor(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = self.monitor_img
-		#self.image.fill(pastelBlueGreen)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
 
@@ -243,7 +227,6 @@ class HardDiskBay(pg.sprite.Sprite):
 		pg.sprite.Sprite.__init__(self, self.groups)
 		self.game = game
 		self.image = self.hdd_img
-		#self.image.fill(red)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
 
@@ -252,7 +235,6 @@ class HardDiskBay(pg.sprite.Sprite):
 		imageFolder = path.join(gameFolder, "images")
 		self.hdd_img = pg.image.load(path.join(imageFolder, 'diskbay.png')).convert()
 		self.hdd_img = pg.transform.scale(self.hdd_img, (int(hdd_width), int(hdd_height)))
-		#self.hdd_img.set_colorkey(white)
 
 class Instructions(pg.sprite.Sprite):
 	def __init__(self, game, x, y, reference_no):
@@ -265,7 +247,6 @@ class Instructions(pg.sprite.Sprite):
 		self.inst_img = pg.image.load(path.join(self.imageFolder, 'Instructions{}.png'.format(reference_no))).convert()
 		self.inst_img = pg.transform.smoothscale(self.inst_img, (int(instruction_width), int(instruction_height)))
 		self.image = self.inst_img
-		#self.image.fill(white)
 		self.rect = self.image.get_rect()
 		self.rect.midtop = (x,y)
 
